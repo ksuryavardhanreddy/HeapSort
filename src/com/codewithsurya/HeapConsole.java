@@ -221,4 +221,7 @@ public class HeapConsole extends Frame {
         } catch (InterruptedException ignored) {
         }
     }
+    private void add() {
+
+    }
 }
