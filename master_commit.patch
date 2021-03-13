@@ -1,0 +1,17 @@
+Index: src/com/codewithsurya/HeapConsole.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/com/codewithsurya/HeapConsole.java b/src/com/codewithsurya/HeapConsole.java
+--- a/src/com/codewithsurya/HeapConsole.java	(date 1615657344511)
++++ b/src/com/codewithsurya/HeapConsole.java	(revision 1f4304ccbdf74ff051bb08d4fc181d1cac916f04)
+@@ -226,8 +226,5 @@
+     }
+     private void someOtherChanges() {
+         boolean someOtherChangesMade=false;
+-    }
+-    private void addingPatch() {
+-        
+     }
+ }
