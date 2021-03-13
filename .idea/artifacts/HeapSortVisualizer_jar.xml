@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="HeapSortVisualizer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/HeapSortVisualizer_jar</output-path>
+    <root id="archive" name="HeapSortVisualizer.jar">
+      <element id="module-output" name="HeapSortVisualizer" />
+    </root>
+  </artifact>
+</component>
