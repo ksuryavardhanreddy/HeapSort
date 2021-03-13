@@ -221,10 +221,4 @@ public class HeapConsole extends Frame {
         } catch (InterruptedException ignored) {
         }
     }
-    private void someChanges() {
-        boolean someChangesMade = true;
-    }
-    private void someOtherChanges() {
-        boolean someOtherChangesMade=false;
-    }
 }
