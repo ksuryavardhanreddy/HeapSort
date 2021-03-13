@@ -55,8 +55,8 @@ public class DisplayPositionSetter {
         }
         else if(Main.nodes<=15) {
             System.out.println("..");
-            VerticalSpaceFactor=7;
-            HorizontalSpaceFactor=90;
+            VerticalSpaceFactor=6;
+            HorizontalSpaceFactor=110;
         }
         else {
             VerticalSpaceFactor=4;
