@@ -33,7 +33,7 @@ public class Input extends Frame implements ActionListener {
             Main.arr[i] = Integer.parseInt(integerStingArray[i]);
 
         HeapConsole hc =new HeapConsole();
-        hc.setSize(HeapUtility.getTreeBaseLength()+1000, HeapUtility.getTreeBaseLength()+500);
+        hc.setSize(HeapUtility.getTreeBaseLength()+1200, HeapUtility.getTreeBaseLength()+500);
         hc.setBackground(Color.BLACK);
         hc.setVisible(true);
     }

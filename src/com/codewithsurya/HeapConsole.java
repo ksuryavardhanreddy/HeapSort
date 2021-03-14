@@ -51,44 +51,154 @@ public class HeapConsole extends Frame {
         System.exit(0);
     }
 
-    private void clearScreen(Graphics g) {
-        g.setColor(Color.BLACK);
-        for(int i=0; i<Main.nodes; i++) {
-            g.fillOval((int)DisplayPositionSetter.queue[i].HorizontalPos,DisplayPositionSetter.queue[i].VerticalPos,circleParameter, circleParameter);
-            g.drawString(""+DisplayPositionSetter.queue[i].data, (int)DisplayPositionSetter.queue[i].HorizontalPos+(circleParameter/2)-HeapUtility.positioner(DisplayPositionSetter.queue[i].data), DisplayPositionSetter.queue[i].VerticalPos+35);
-            if(i>0 && ((i-1)/2)*2+1==i)
-                g.drawLine((int)DisplayPositionSetter.queue[(i-1)/2].HorizontalPos + (circleParameter/2), DisplayPositionSetter.queue[(i-1)/2].VerticalPos+(circleParameter), DisplayPositionSetter.queue[(i-1)/2].leftChildXPos,  DisplayPositionSetter.queue[(i-1)/2].leftChildYPos);
-            else if(i>0 && ((i-1)/2)*2+2==i)
-                g.drawLine((int)DisplayPositionSetter.queue[(i-1)/2].HorizontalPos + (circleParameter/2), DisplayPositionSetter.queue[(i-1)/2].VerticalPos+(circleParameter), DisplayPositionSetter.queue[(i-1)/2].rightChildXPos,  DisplayPositionSetter.queue[(i-1)/2].rightChildYPos);
+    private void adjust(int parent, int n) {
+        adjustCodeLineHighlighter(1);
+        procedureSleep(1000);
+        adjustCodeLineUnHighlighter(1);
+
+        adjustCodeLineHighlighter(2);
+        procedureSleep(500);
+        highlightNode(parent, Color.ORANGE); // line 2
+        procedureSleep(1300);
+        adjustCodeLineUnHighlighter(2);
+
+        adjustCodeLineHighlighter(3);
+        procedureSleep(500);
+        int max=parent; // line 3
+        procedureSleep(500);
+        adjustCodeLineUnHighlighter(3);
+
+        adjustCodeLineHighlighter(4);
+        procedureSleep(500);
+        int lchild=(2*parent)+1; // line 4
+        procedureSleep(500);
+        adjustCodeLineUnHighlighter(4);
+
+        adjustCodeLineHighlighter(5);
+        procedureSleep(500);
+        int rchild=(2*parent)+2;
+        procedureSleep(500);
+        adjustCodeLineUnHighlighter(5);
+
+        adjustCodeLineHighlighter(6);
+        procedureSleep(1000);
+        adjustCodeLineUnHighlighter(6);
+        if(lchild<n && DisplayPositionSetter.queue[lchild].data>DisplayPositionSetter.queue[max].data) {
+            adjustCodeLineHighlighter(7);
+            procedureSleep(800);
+            max = lchild;
+            procedureSleep(800);
+            adjustCodeLineUnHighlighter(7);
         }
-        unsetComments();
+
+
+        adjustCodeLineHighlighter(8);
+        procedureSleep(1000);
+        adjustCodeLineUnHighlighter(8);
+        if(rchild<n && DisplayPositionSetter.queue[rchild].data>DisplayPositionSetter.queue[max].data) {
+            adjustCodeLineHighlighter(9);
+            procedureSleep(800);
+            max = rchild;
+            procedureSleep(800);
+            adjustCodeLineUnHighlighter(9);
+        }
+
+        adjustCodeLineHighlighter(10);
+        procedureSleep(800);
+        procedureSleep(800);
+        adjustCodeLineUnHighlighter(10);
+        if(max!=parent) {
+            adjustCodeLineHighlighter(11);
+            procedureSleep(800);
+            highlightNode(max, Color.cyan);
+            procedureSleep(800);
+            adjustCodeLineUnHighlighter(11);
+
+            adjustCodeLineHighlighter(12);
+            procedureSleep(800);
+            swapNodes(max, parent, Color.ORANGE, Color.CYAN);
+            procedureSleep(800);
+            adjustCodeLineUnHighlighter(12);
+
+            adjustCodeLineHighlighter(13);
+            procedureSleep(1000);
+            procedureSleep(1000);
+            adjustCodeLineUnHighlighter(13);
+            adjust(max, n);
+        }
+        unHighlightNode(parent);
+    }
+    private void heapSort() {
+        heapSortCodeLineHighlighter(1);
+        Graphics g = getCustomGraphics();
+        procedureSleep(3000);
+        heapSortCodeLineUnHighlighter(1);
+        heapSortCodeLineHighlighter(2);
+        procedureSleep(1700);
+        heapSortCodeLineUnHighlighter(2);
+        for(int i=(Main.nodes/2)-1; i>=0; i--) {
+            adjust(i, Main.nodes);
+        }
+
+        procedureSleep(12_000);
+        for(int i=Main.nodes-1; i>=0; i--) {
+            highlightNode(0, Color.MAGENTA);
+            procedureSleep(1000);
+            highlightNode(0,Color.magenta);
+            swapNodes(0, i, Color.orange, Color.magenta);
+            highlightNode(i, Color.blue);
+            g.setColor(Color.blue);
+            g.fillOval(sortedCounter +63, DisplayPositionSetter.queue[Main.nodes-1].VerticalPos+120, 60, 60);
+            sortedCounter +=63;
+            g.setColor(Color.white);
+            g.drawString(""+DisplayPositionSetter.queue[i].data, sortedCounter +(circleParameter/2)-HeapUtility.positioner(DisplayPositionSetter.queue[i].data),DisplayPositionSetter.queue[Main.nodes-1].VerticalPos+155);
+            adjust(0, i);
+        }
+    }
+    private void codeSetter() {
+        Graphics g = getCodeSetterGraphics();
+        g.setColor(Color.lightGray);
+        int lineVerticalPos=DisplayPositionSetter.queue[0].VerticalPos+80;
+        for(int i=0; i<15; i++, lineVerticalPos+=20) {
+            g.drawString(HeapUtility.adjustCodeSetter(i+1), 900, lineVerticalPos);
+            g.drawString(HeapUtility.heapSortCodeSetter(i+1), 620, lineVerticalPos);
+        }
+    }
+    private void heapSortCodeLineHighlighter(int lineNumber) {
+        Graphics g = getCodeSetterGraphics();
+        int lineVerticalPos=DisplayPositionSetter.queue[0].VerticalPos+80;
+        for(int i=0; i<lineNumber-1; i++)
+            lineVerticalPos+=20;
+        g.setColor(Color.YELLOW);
+        g.drawString(HeapUtility.heapSortCodeSetter(lineNumber), 620, lineVerticalPos);
+    }
+    private void heapSortCodeLineUnHighlighter(int lineNumber) {
+        Graphics g = getCodeSetterGraphics();
+        int lineVerticalPos=DisplayPositionSetter.queue[0].VerticalPos+80;
+        for(int i=0; i<lineNumber-1; i++)
+            lineVerticalPos+=20;
+        g.setColor(Color.lightGray);
+        g.drawString(HeapUtility.heapSortCodeSetter(lineNumber), 620, lineVerticalPos);
+    }
+    private void adjustCodeLineHighlighter(int lineNumber) {
+        Graphics g = getCodeSetterGraphics();
+        int lineVerticalPos=DisplayPositionSetter.queue[0].VerticalPos+80;
+        for(int i=0; i<lineNumber-1; i++)
+            lineVerticalPos+=20;
+        g.setColor(Color.YELLOW);
+        g.drawString(HeapUtility.adjustCodeSetter(lineNumber), 900, lineVerticalPos);
+    }
+    private void adjustCodeLineUnHighlighter(int lineNumber) {
+        Graphics g = getCodeSetterGraphics();
+        int lineVerticalPos=DisplayPositionSetter.queue[0].VerticalPos+80;
+        for(int i=0; i<lineNumber-1; i++)
+            lineVerticalPos+=20;
+        g.setColor(Color.lightGray);
+        g.drawString(HeapUtility.adjustCodeSetter(lineNumber), 900, lineVerticalPos);
     }
     private void swapNodes(int indexA, int indexB, Color c1, Color c2) {
         Graphics g = getCustomGraphics();
-
-        g.setColor(c2);
-        g.fillOval((int) DisplayPositionSetter.queue[indexA].HorizontalPos, DisplayPositionSetter.queue[indexA].VerticalPos, circleParameter, circleParameter);
-        g.setColor(Color.BLACK);
-        g.drawString("" + DisplayPositionSetter.queue[indexA].data, (int) DisplayPositionSetter.queue[indexA].HorizontalPos + (circleParameter / 2) - HeapUtility.positioner(DisplayPositionSetter.queue[indexA].data), DisplayPositionSetter.queue[indexA].VerticalPos + 35);
-
-        g.setColor(c1);
-        g.fillOval((int) DisplayPositionSetter.queue[indexB].HorizontalPos, DisplayPositionSetter.queue[indexB].VerticalPos, circleParameter, circleParameter);
-        g.setColor(Color.BLACK);
-        g.drawString("" + DisplayPositionSetter.queue[indexB].data, (int) DisplayPositionSetter.queue[indexB].HorizontalPos + (circleParameter / 2) - HeapUtility.positioner(DisplayPositionSetter.queue[indexB].data), DisplayPositionSetter.queue[indexB].VerticalPos + 35);
-
         procedureSleep(1000);
-
-        g.setColor(c2);
-        g.fillOval((int) DisplayPositionSetter.queue[indexA].HorizontalPos, DisplayPositionSetter.queue[indexA].VerticalPos, circleParameter, circleParameter);
-        g.setColor(Color.BLACK);
-        g.drawString("" + DisplayPositionSetter.queue[indexA].data, (int) DisplayPositionSetter.queue[indexA].HorizontalPos + (circleParameter / 2) - HeapUtility.positioner(DisplayPositionSetter.queue[indexA].data), DisplayPositionSetter.queue[indexA].VerticalPos + 35);
-
-        g.setColor(c1);
-        g.fillOval((int) DisplayPositionSetter.queue[indexB].HorizontalPos, DisplayPositionSetter.queue[indexB].VerticalPos, circleParameter, circleParameter);
-        g.setColor(Color.BLACK);
-        g.drawString("" + DisplayPositionSetter.queue[indexB].data, (int) DisplayPositionSetter.queue[indexB].HorizontalPos + (circleParameter / 2) - HeapUtility.positioner(DisplayPositionSetter.queue[indexB].data), DisplayPositionSetter.queue[indexB].VerticalPos + 35);
-
-        procedureSleep(1500);
 
         int t = DisplayPositionSetter.queue[indexA].data;
         DisplayPositionSetter.queue[indexA].data=DisplayPositionSetter.queue[indexB].data;
@@ -116,42 +226,6 @@ public class HeapConsole extends Frame {
         g.setColor(Color.BLACK);
         g.drawString("" + DisplayPositionSetter.queue[indexB].data, (int) DisplayPositionSetter.queue[indexB].HorizontalPos + (circleParameter / 2) - HeapUtility.positioner(DisplayPositionSetter.queue[indexB].data), DisplayPositionSetter.queue[indexB].VerticalPos + 35);
     }
-    private void adjust(int parent, int n) {
-        highlightNode(parent, Color.ORANGE);
-        procedureSleep(1500);
-        int max=parent;
-        int lchild=(2*parent)+1;
-        int rchild=(2*parent)+2;
-        if(lchild<n && DisplayPositionSetter.queue[lchild].data>DisplayPositionSetter.queue[max].data)
-            max=lchild;
-        if(rchild<n && DisplayPositionSetter.queue[rchild].data>DisplayPositionSetter.queue[max].data)
-            max=rchild;
-        if(max!=parent) {
-            swapNodes(max, parent, Color.ORANGE, Color.CYAN);
-            adjust(max, n);
-        }
-        unHighlightNode(parent);
-    }
-    private void heapSort() {
-        Graphics g = getCustomGraphics();
-        procedureSleep(5000);
-        for(int i=(Main.nodes/2)-1; i>=0; i--) {
-            adjust(i, Main.nodes);
-        }
-        procedureSleep(12_000);
-        for(int i=Main.nodes-1; i>=0; i--) {
-            highlightNode(0, Color.MAGENTA);
-            procedureSleep(1000);
-            swapNodes(0, i, Color.orange, Color.magenta);
-            highlightNode(i, Color.blue);
-            g.setColor(Color.blue);
-            g.fillOval(sortedCounter +63, DisplayPositionSetter.queue[Main.nodes-1].VerticalPos+120, 60, 60);
-            sortedCounter +=63;
-            g.setColor(Color.white);
-            g.drawString(""+DisplayPositionSetter.queue[i].data, sortedCounter +(circleParameter/2)-HeapUtility.positioner(DisplayPositionSetter.queue[i].data),DisplayPositionSetter.queue[Main.nodes-1].VerticalPos+155);
-            adjust(0, i);
-        }
-    }
     private void highlightNode(int indexA, Color c) {
         Graphics g = getCustomGraphics();
         g.setColor(c);
@@ -170,7 +244,7 @@ public class HeapConsole extends Frame {
         g.drawString("" + DisplayPositionSetter.queue[indexA].data, (int) DisplayPositionSetter.queue[indexA].HorizontalPos + (circleParameter / 2) - HeapUtility.positioner(DisplayPositionSetter.queue[indexA].data), DisplayPositionSetter.queue[indexA].VerticalPos + 35);
     }
     private void setComments() {
-        int a=DisplayPositionSetter.queue[0].VerticalPos+20;
+        int a=DisplayPositionSetter.queue[0].VerticalPos-10;
         int b=a;
         Graphics g = this.getGraphics();
         g.setFont(new Font ("TimesRoman", Font.ITALIC , 16));
@@ -192,7 +266,7 @@ public class HeapConsole extends Frame {
         g.fillRoundRect(580, b+53, 15, 15, 15,15);
     }
     private void unsetComments() {
-        int a=DisplayPositionSetter.queue[0].VerticalPos+20;
+        int a=DisplayPositionSetter.queue[0].VerticalPos-10;
         int b=a;
         Graphics g = this.getGraphics();
         g.setFont(new Font ("TimesRoman", Font.ITALIC , 16));
@@ -207,6 +281,23 @@ public class HeapConsole extends Frame {
         b-=13;
         g.drawString("Node with the HIGHEST priority key after ADJUST", 600, a);
         g.fillRoundRect(580, b+53, 15, 15, 15,15);
+    }
+    private void clearScreen(Graphics g) {
+        g.setColor(Color.BLACK);
+        for(int i=0; i<Main.nodes; i++) {
+            g.fillOval((int)DisplayPositionSetter.queue[i].HorizontalPos,DisplayPositionSetter.queue[i].VerticalPos,circleParameter, circleParameter);
+            g.drawString(""+DisplayPositionSetter.queue[i].data, (int)DisplayPositionSetter.queue[i].HorizontalPos+(circleParameter/2)-HeapUtility.positioner(DisplayPositionSetter.queue[i].data), DisplayPositionSetter.queue[i].VerticalPos+35);
+            if(i>0 && ((i-1)/2)*2+1==i)
+                g.drawLine((int)DisplayPositionSetter.queue[(i-1)/2].HorizontalPos + (circleParameter/2), DisplayPositionSetter.queue[(i-1)/2].VerticalPos+(circleParameter), DisplayPositionSetter.queue[(i-1)/2].leftChildXPos,  DisplayPositionSetter.queue[(i-1)/2].leftChildYPos);
+            else if(i>0 && ((i-1)/2)*2+2==i)
+                g.drawLine((int)DisplayPositionSetter.queue[(i-1)/2].HorizontalPos + (circleParameter/2), DisplayPositionSetter.queue[(i-1)/2].VerticalPos+(circleParameter), DisplayPositionSetter.queue[(i-1)/2].rightChildXPos,  DisplayPositionSetter.queue[(i-1)/2].rightChildYPos);
+        }
+        unsetComments();
+    }
+    private Graphics getCodeSetterGraphics() {
+        Graphics g = getCustomGraphics();
+        g.setFont (new Font ("AvantGarde", Font.ITALIC, 17));
+        return g;
     }
     private Graphics getCustomGraphics() {
         Graphics g = this.getGraphics();
