@@ -40,7 +40,8 @@ public class HeapConsole extends Frame {
 
             procedureSleep(1500);
         }
-        procedureSleep(4000);
+        procedureSleep(3000);
+        codeSetter();
         heapSort();
         procedureSleep(3000);
         clearScreen(g);
