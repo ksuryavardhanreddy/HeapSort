@@ -4,20 +4,17 @@ public class HeapUtility {
     public static String adjustCodeSetter(int lineNumber) {
         return switch (lineNumber) {
             case 1 -> "void heapify(int *arr, int n, int parent) {";
-            case 2 -> "    //---------Colouring 'parent' in yellow--------//";
+            case 2 -> "    //--adjusting w.r.t. node coloured in YELLOW--//";
             case 3 -> "    int max=parent, t;";
             case 4 -> "    int lchild=(2*parent)+1;";
             case 5 -> "    int rchild=(2*parent)+2;";
-            case 6 -> "    if(lchild<n && arr[lchild]>arr[max])";
-            case 7 -> "        max=lchild;";
-            case 8 -> "    if(rchild<n && arr[rchild]>arr[max])";
-            case 9 -> "        max=rchild;";
-            case 10 -> "    if(max!=parent) {  // check if parent node is not the one with highest priority key";
-            case 11 -> "    //---------Colouring 'max' in cyan--------//";
-            case 12 -> "        SWAP(arr[max], arr[parent]);";
-            case 13 -> "        heapify(arr, n, max); // recursive call ";
-            case 14 -> "    }";
-            case 15 -> "}";
+            case 6 -> "    max = findMax(parent, lchild, rchild)";
+            case 7 -> "    if(max!=parent) {";
+            case 8 -> "    //---------colouring 'max' in CYAN--------//";
+            case 9 -> "        SWAP(arr[max], arr[parent]);";
+            case 10 -> "        heapify(arr, n, max); // recursive call ";
+            case 11 -> "    }";
+            case 12 -> "}";
             default -> "";
         };
     }
@@ -25,12 +22,15 @@ public class HeapUtility {
         return switch (lineNumber) {
             case 1 -> "void heapsort(int *arr, int n) {";
             case 2 -> "    for(int i=(n/2)-1; i>=0; i--)";
-            case 3 -> "    heapify(arr, n, i);";
-            case 4 -> "    for(int i=n-1; i>=0; i--) {";
-            case 5 -> "        SWAP(arr[i], arr[0])";
-            case 6 -> "        heapify(arr, i, 0);";
-            case 7 -> "    }";
-            case 8 -> "}";
+            case 3 -> "        heapify(arr, n, i); ";
+            case 4 -> "    // max heap formed";
+            case 5 -> "    for(int i=n-1; i>=0; i--) {";
+            case 6 -> "    //--colouring arr[0] in PINK";
+            case 7 -> "    //--colouring arr[i] in YELLOW";
+            case 8 -> "        SWAP(arr[i], arr[0])";
+            case 9 -> "        heapify(arr, i, 0);";
+            case 10 -> "    }";
+            case 11 -> "}";
             default -> "";
         };
     }
